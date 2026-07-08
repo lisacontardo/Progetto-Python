@@ -6,9 +6,8 @@ nel corrispondente colore RGB
 """
 import json
 import numpy as np
-# from exceptions import ...
-class PaletteError(Exception):
-    pass
+
+from exceptions import Paletteerror
 
 class Palette:
     NUM_COLORS = 16 
@@ -26,10 +25,12 @@ class Palette:
         except FileNotFoundError:
         #se il file non esiste
             raise PaletteError("File non trovato.")
+        #file esiste ma il JSON è malformato
+        except json.JSONDecodeError:
+            raise SceneError(f"File della scena non è un JSON valido: {path}")
         
 
-        return data
-    
+
     #controlla la lista e converte in array numpy
     #creo corrispondenza tra indici (che trovo nel disegno) e colori RGB nella lista
     def _validate_converte(self, data):
@@ -56,7 +57,7 @@ class Palette:
     #Restituisce il colore RGB corrispondente a un indice di palette
     def get_rgb(self, index: int):
     
-        if not isinstance (index, (int, np.integer)) or not (0 <= index <= self.NUM_COLORS):
+        if not isinstance (index, (int, np.integer)) or not (0 <= index < self.NUM_COLORS):
             raise PaletteError(f"Indice non valido: {index}")
         
         #ritorna riga 'index' della tabella 

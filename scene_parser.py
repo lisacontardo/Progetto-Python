@@ -72,7 +72,7 @@ class SceneParser:
             if not isinstance(row, list):
                 raise SceneError("La riga deve essere una lista")
             if (len(row) != self.TILE_COLS):
-                raise SceneError(f"La riga {r} della tile_map deve avere {self.TILE_MAP_COLS} elementi")
+                raise SceneError(f"La riga {r} della tile_map deve avere {self.TILE_COLS} elementi")
             
             #controllo ogni numero della riga
             for i, tile_id in enumerate(row):

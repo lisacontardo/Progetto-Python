@@ -25,7 +25,7 @@ class VirtualVRAM():
         except FileNotFoundError:
             raise VRAMError(f"File binario non trovato: {path}")
 
-        if len(bytes) != self.EXPECTED_BYTES:
+        if len(bytes) != EXPECTED_BYTES:
             raise VRAMError(f"Dimensione errata: attesi {EXPECTED_BYTES} byte, trovati {len(bytes)}")
         
         #converto in array numpy di 32768 numeri(uno per byte) - cambia solo il tipo di oggetto
