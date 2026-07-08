@@ -7,7 +7,7 @@ nel corrispondente colore RGB
 import json
 import numpy as np
 
-from exceptions import Paletteerror
+from exceptions import PaletteError
 
 class Palette:
     NUM_COLORS = 16 
