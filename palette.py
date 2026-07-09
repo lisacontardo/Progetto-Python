@@ -16,29 +16,32 @@ class Palette:
         data = self._load(json_path) 
         self.colors = self._validate_converte(data)
 
-    #legge percorso e restituisce il contenuto come lista python
+    """
+    legge percorso e restituisce il contenuto come lista python
+    input: path (str), percorso del file palette.json
+    output: lista python grezza (non ancora validata)
+    """
     def _load(self, path):
         try:
-        #prova ad aprire il file palette.json
             with open(path, "r") as f:
-                return json.load(f) #lista grezza
+                return json.load(f) #lista di liste grezza
         except FileNotFoundError:
-        #se il file non esiste
             raise PaletteError("File non trovato.")
+
         #file esiste ma il JSON è malformato
         except json.JSONDecodeError:
             raise SceneError(f"File della scena non è un JSON valido: {path}")
-        
-
-
-    #controlla la lista e converte in array numpy
-    #creo corrispondenza tra indici (che trovo nel disegno) e colori RGB nella lista
+    """   
+    controlla la lista e converte in array numpy
+    creo corrispondenza tra indici (che trovo nel disegno) e colori RGB nella lista
+    input:  data, lista python grezza (letta dal JSON)
+    output: np.ndarray di forma (16, 3)
+    """
     def _validate_converte(self, data):
-        #controllo il tipo esterno 
+        #controlli
         if not isinstance(data, list):
             raise PaletteError("La palette deve essere una lista")
         
-        #controllo dimensione
         if len(data) != self.NUM_COLORS:
             raise PaletteError(f"La palette deve avere esattamente {self.NUM_COLORS} colori")
 
@@ -50,17 +53,21 @@ class Palette:
             for element in color:
                 if not isinstance(element, int) or not (0 <= element <= 255):
                     raise PaletteError(f"Valore non valido nel colore {i}")
+        
         #converte e ritorna array numpy 16x3 
         return np.array(data, dtype=np.uint8) 
 
-
-    #Restituisce il colore RGB corrispondente a un indice di palette
+    """
+    Restituisce il colore RGB corrispondente a un indice di palette
+    input: indice di palette (0-15)
+    output: array numpy di 3 elementi (riga corrispondente a un colore RGB)
+    """
     def get_rgb(self, index: int):
     
         if not isinstance (index, (int, np.integer)) or not (0 <= index < self.NUM_COLORS):
             raise PaletteError(f"Indice non valido: {index}")
         
-        #ritorna riga 'index' della tabella 
+        #ritorna riga 'index' della matrice
         return self.colors[index]
     
     

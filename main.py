@@ -16,7 +16,6 @@ def main():
                 "<tiles.bin> <sprites.bin> <output.png>" 
             )
             sys.exit(1)  
-
         palette_path  = sys.argv[1]
         scene_path    = sys.argv[2]
         tiles_path    = sys.argv[3]
