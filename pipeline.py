@@ -19,7 +19,7 @@ class RenderingPipeline:
     output: /
     """
     def __init__(self, palette, vram, scena):
-        #creo riferimenti per la classe RenderingPipeline
+        #salva riferimenti a oggetti per la classe RenderingPipeline
         self.palette = palette
         self.vram    = vram
         self.scena   = scena
@@ -46,7 +46,7 @@ class RenderingPipeline:
 
     """
     disegna tutti i tile del fondale nel frame buffer
-    input: blitter (Blitter): oggetto che sa disegnare i tile
+    input: blitter (Blitter) oggetto che sa disegnare i tile
     output: no, modifica il frame buffer tramite il blitter
     """
     def _disegna_fondale(self, blitter):
@@ -57,7 +57,7 @@ class RenderingPipeline:
                 
                 #scorro la matrice 256x256 e lavoro con 1 singolo tile(32x32) 
                 tile_id = self.scena.tile_map[riga][colonna]
-                
+                #da posizione logica a pixel
                 x  = colonna * 32  
                 y  = riga    * 32 
                 
@@ -66,7 +66,7 @@ class RenderingPipeline:
 
     """
     disegna tutti gli sprite nel frame buffer
-    input: blitter (Blitter): oggetto che sa disegnare gli sprite
+    input: blitter (Blitter) oggetto che sa disegnare gli sprite
     output: no, modifica il frame buffer tramite il blitter
     """
     def _disegna_oggetti(self, blitter):
@@ -85,8 +85,7 @@ class RenderingPipeline:
     """
     Converte il frame buffer da indici di palette a RGB e salva il PNG
     Per ogni pixel del frame buffer (un indice da 0 a 15), recupera
-    il colore RGB corrispondente dalla palette e lo scrive nell'immagine
-    finale. Usa Pillow solo per il salvataggio finale.
+    il colore RGB corrispondente dalla palette e lo scrive nell'immagine finale.
     input: frame_buffer, matrice (480, 640) di indici di palette 
             + output_path, percorso del file PNG da salvare.
     output:no, salva il file PNG nel percorso indicato
@@ -94,13 +93,12 @@ class RenderingPipeline:
     def _salva_png(self, frame_buffer, output_path):
 
         # self.palette.colors e' la tabella (16, 3)
-        # uso come "dizionario" numpy: palette.colors[frame_buffer] sostituisce
-        # ogni indice con la sua terna RGB in una sola operazione
         immagine_rgb = self.palette.colors[frame_buffer]
 
         # usa Pillow per salvare il PNG
         try:
             immagine = Image.fromarray(immagine_rgb, mode="RGB")
             immagine.save(output_path)
+        #cattura qualsiasi eccezione che Pillow può sollevare 
         except Exception as e:
             raise RenderError(f"Impossibile salvare il file PNG: {output_path} ({e})")
