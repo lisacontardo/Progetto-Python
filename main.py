@@ -1,9 +1,7 @@
 # LISA CONTARDO SM3201635
 import sys
 from exceptions import RenderError
-from palette import Palette
-from vram import VirtualVRAM
-from scene_parser import SceneParser
+
 from pipeline import RenderingPipeline
 
 NUM_ARGS = 6

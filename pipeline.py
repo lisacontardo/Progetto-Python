@@ -7,6 +7,7 @@ lista, poi converte il frame buffer indicizzato in RGB e salva il PNG.
 import numpy as np
 from PIL import Image
 from exceptions import RenderError
+
 from blitter import Blitter 
 
 class RenderingPipeline:
